@@ -9,8 +9,11 @@ passport.use(new GoogleStrategy({
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
   },
-  accessToken => {
-    console.log(accessToken);
+  (accessToken, refreshToken, profile, cb) => {
+    console.log('access token', accessToken);
+    console.log('refresh token', refreshToken);
+    console.log('profile', profile);
+
   }
 ));
 
@@ -19,6 +22,8 @@ app.get('/auth/google',
     scope: ['profile', 'email']
   })
 )
+
+app.get('/auth/google/callback', passport.authenticate('google'));
 
 const PORT = process.env.PORT || 4000;
 
